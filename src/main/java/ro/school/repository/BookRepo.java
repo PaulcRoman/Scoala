@@ -10,9 +10,6 @@ import java.sql.ResultSet;
 public class BookRepo<Lista> extends Connection{
 
 
-
-
-
     public void insertBook(Book book){
         String insertTo = "";
         insertTo += "INSERT INTO book";
@@ -23,7 +20,7 @@ public class BookRepo<Lista> extends Connection{
         exacuteStatement(insertTo);
     }
 
-  public void updateId(String bookName, String date){
+  public void updateDate(String bookName, String date){
         String update ="";
         update += String.format("UPDATE book SET created_at = '%s'", date);
         update += String.format("where book_name = '%s'",bookName);
