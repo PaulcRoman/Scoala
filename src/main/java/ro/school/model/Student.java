@@ -16,6 +16,9 @@ public class Student {
     private int age;
     private String password;
 
+    public Student(){
+
+    }
 
     public Student(String firstName, String lastName, String email, int age, String password){
         this.firstName = firstName;

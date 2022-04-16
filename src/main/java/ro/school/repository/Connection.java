@@ -11,12 +11,10 @@ public class Connection implements RepoData{
     java.sql.Connection connection = null;
     Statement statement = null;
 
-
     public  Connection(){
 
         connect();
     }
-
 
     @Override
     public void connect() {
@@ -24,8 +22,6 @@ public class Connection implements RepoData{
 
             connection = DriverManager.getConnection(JdbcURl, username, password);
             statement = connection.createStatement();
-
-            System.out.println("s-a conectat");
 
         }catch (SQLException e){
             System.out.println("Erroare connectare la baza de date");

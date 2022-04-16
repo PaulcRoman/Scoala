@@ -1,6 +1,8 @@
 package ro.school.repository;
 
 import ro.school.model.Book;
+import ro.school.model.Enrolments;
+import ro.school.model.Student;
 
 import java.awt.event.TextEvent;
 import java.util.ArrayList;
@@ -8,7 +10,6 @@ import java.util.List;
 import java.sql.ResultSet;
 
 public class BookRepo<Lista> extends Connection{
-
 
     public void insertBook(Book book){
         String insertTo = "";
@@ -20,18 +21,25 @@ public class BookRepo<Lista> extends Connection{
         exacuteStatement(insertTo);
     }
 
-  public void updateDate(String bookName, String date){
+  public String updateDate(String bookName, String date){
         String update ="";
         update += String.format("UPDATE book SET created_at = '%s'", date);
         update += String.format("where book_name = '%s'",bookName);
         exacuteStatement(update);
+        return date;
   }
 
-  public void delete(String bookName){
-        String delete = "";
-        delete += "DELETE FROM book ";
-        delete += String.format("WHERE book_name = '%s'", bookName);
-        exacuteStatement(delete);
+  public boolean delete(String bookName){
+
+        if (bookName != null) {
+            String delete = "";
+            delete += "DELETE FROM book ";
+            delete += String.format("WHERE book_name = '%s'", bookName);
+            exacuteStatement(delete);
+
+            return true;
+        }
+        return false;
   }
 
   private ResultSet selectAll(){
@@ -60,5 +68,8 @@ public class BookRepo<Lista> extends Connection{
         }
         return bookList;
   }
+
+
+
 
 }

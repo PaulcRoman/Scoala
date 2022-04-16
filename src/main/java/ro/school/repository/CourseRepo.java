@@ -1,6 +1,7 @@
 package ro.school.repository;
 
 import ro.school.model.Course;
+import ro.school.model.Enrolments;
 
 import javax.swing.*;
 import java.sql.ResultSet;
@@ -19,18 +20,25 @@ public class CourseRepo<Lista> extends Connection {
         exacuteStatement(insertTo);
     }
 
-    public void updateName(int id, String courseName){
+    public String updateName(int id, String courseName){
         String update ="";
         update += String.format("UPDATE course SET name = '%s'", courseName);
         update += String.format("where id = %d", id);
         exacuteStatement(update);
+        return courseName;
     }
 
-    public void delete(int id){
-        String delete = "";
-        delete += "DELETE FROM course ";
-        delete += String.format("WHERE id = %d ", id);
-        exacuteStatement(delete);
+    public boolean delete(int id){
+
+        if (id != -1) {
+            String delete = "";
+            delete += "DELETE FROM course ";
+            delete += String.format("WHERE id = %d ", id);
+            exacuteStatement(delete);
+
+            return true;
+        }
+        return false;
     }
 
     private ResultSet selectAll(){
@@ -57,6 +65,66 @@ public class CourseRepo<Lista> extends Connection {
             System.out.println("Nu s-a creat lista");
         }
         return courseList;
+    }
+
+    private ResultSet join(int courseId){
+
+        String text= "";
+        text += String.format("select  course_id from enrolment" +
+                " join student s on enrolment.student_id = s.id " +
+                "where student_id=%d ",courseId );
+        text += "union\n" +
+                "select name from course\n" +
+                "join enrolment e on course.id = e.course_id";
+
+        exacuteStatement(text);
+
+        try {
+
+            return statement.getResultSet();
+        }catch (Exception e){
+            System.out.println("Nu s-a conectat la schita");
+            return null;
+        }
+
+    }
+
+    public List<Enrolments> allEnrolments(int id){
+
+        ResultSet set = join(id);
+
+        List<Enrolments> enrolmentsList = new ArrayList<>();
+
+        try {
+            while (set.next()){
+                enrolmentsList.add(new Enrolments(set.getInt(1)));
+
+            }
+
+        }catch (Exception e){
+            System.out.println("Nu s-a creat lista");
+        }
+        return enrolmentsList;
+
+    }
+
+    public List<Enrolments> cursuriActive(int id){
+
+        ResultSet set = join(id);
+
+        List<Enrolments> enrolmentsList = new ArrayList<>();
+
+        try {
+            while (set.next()){
+                enrolmentsList.add(new Enrolments(set.getInt(1)));
+
+            }
+
+        }catch (Exception e){
+            System.out.println("Nu s-a creat lista");
+        }
+        return enrolmentsList;
+
     }
 
 }

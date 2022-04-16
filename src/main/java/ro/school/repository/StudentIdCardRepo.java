@@ -18,18 +18,26 @@ public class StudentIdCardRepo extends Connection{
         exacuteStatement(insertInto);
     }
 
-    public void updateCardNumber(int id, int cardNumber){
+    public int updateCardNumber(int id, int cardNumber){
         String update = "";
         update += String.format("UPDATE student_id_card SET card_number = %d ",cardNumber);
         update += String.format("WHERE id = %d", id);
         exacuteStatement(update);
+        return cardNumber;
     }
 
-    public void delete(int id){
-        String delete = "";
+    public boolean delete(int id) {
+
+        if (id != -1) {
+            String delete = "";
         delete += "DELETE FROM student_id_card ";
         delete += String.format("WHERE id = %d ", id);
         exacuteStatement(delete);
+
+        return true;
+    }
+        return false;
+
     }
 
     private ResultSet selectAll(){

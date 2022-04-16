@@ -1,5 +1,6 @@
 package ro.school.repository;
 
+import ro.school.model.Enrolments;
 import ro.school.model.Student;
 
 import java.net.ConnectException;
@@ -27,11 +28,17 @@ public class StudentRepo<Lista> extends Connection {
         exacuteStatement(update);
     }
 
-    public void delete(String email){
-        String delete = "";
-        delete += "DELETE FROM student ";
-        delete += String.format("WHERE email = '%s'", email);
-        exacuteStatement(delete);
+    public boolean delete(String email){
+
+        if (email != null) {
+            String delete = "";
+            delete += "DELETE FROM student ";
+            delete += String.format("WHERE email = '%s'", email);
+            exacuteStatement(delete);
+
+            return true;
+        }
+        return false;
     }
 
     private ResultSet selectAll(){
@@ -63,5 +70,56 @@ public class StudentRepo<Lista> extends Connection {
         }
         return studentList;
     }
+
+    private ResultSet join(int studentId){
+
+        String text= "";
+        text += String.format("select  course_id from enrolment" +
+                " join student s on enrolment.student_id = s.id " +
+                "where student_id=%d ",studentId);
+
+        exacuteStatement(text);
+
+        try {
+
+            return statement.getResultSet();
+        }catch (Exception e){
+            System.out.println("Nu s-a conectat la schita");
+            return null;
+        }
+
+    }
+
+    public List<Enrolments> allEnrolments(int id){
+
+        ResultSet set = join(id);
+
+        List<Enrolments> enrolmentsList = new ArrayList<>();
+
+        try {
+            while (set.next()){
+                enrolmentsList.add(new Enrolments(set.getInt(1)));
+
+            }
+
+        }catch (Exception e){
+            System.out.println("Nu s-a creat lista");
+        }
+        return enrolmentsList;
+
+    }
+
+    public Student login(String email, String parola){
+
+        for (Student s : allStudents()){
+
+            if (s.getEmail().equals(email) && s.getPassword().equals(parola)){
+                return s;
+            }
+        }
+        return null;
+    }
+
+
 
 }

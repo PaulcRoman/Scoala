@@ -19,4 +19,8 @@ public class Enrolments {
         this.data = data;
     }
 
+    public Enrolments(int courseID){
+        this.courseID = courseID;
+    }
+
 }
