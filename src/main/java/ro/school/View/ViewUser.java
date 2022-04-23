@@ -5,9 +5,6 @@ import ro.school.model.Enrolments;
 import ro.school.model.Student;
 import ro.school.repository.*;
 
-import java.sql.SQLOutput;
-import java.util.ArrayList;
-import java.util.EmptyStackException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -19,8 +16,6 @@ public class ViewUser {
     private StudentIdCardRepo studentIdCardRepo;
     private Scanner scanner;
     private Student student;
-    private StudentRepo studentRepo;
-
 
     public ViewUser() {
         this.bookRepo = new BookRepo();
@@ -29,10 +24,8 @@ public class ViewUser {
         this.studentIdCardRepo = new StudentIdCardRepo();
         this.scanner = new Scanner(System.in);
         this.student = new Student(1,"Stefania","Stocky","sstocky0@irs.gov",1,"35ki3B50TR");
-        this.studentRepo = new StudentRepo();
 
     }
-
 
     public void menu(){
 
@@ -79,19 +72,20 @@ public class ViewUser {
 
     public void cursuriInscris() {
 
-        System.out.println("Introduceti ID-ul dvs pentru a vizualiza cursurile la care sunteti inscris");
+       List<Enrolments> enrolments = enrolmentsRepo.enrolmentsInscris(student.getId());
 
-        int id = scanner.nextInt();
+        System.out.println(enrolments);
+       for (Enrolments e : enrolments){
 
-        List<Enrolments> enrolmentsList = courseRepo.allEnrolments(id);
+            Course course= courseRepo.courseById(e.getCourseID());
 
-        for (Enrolments e : enrolmentsList) {
-            System.out.println(e);
-        }
+           System.out.println(course);
+
+       }
 
     }
 
-        public void inscriereCursNou() {
+    public void inscriereCursNou() {
 
             afisareCurs();
 

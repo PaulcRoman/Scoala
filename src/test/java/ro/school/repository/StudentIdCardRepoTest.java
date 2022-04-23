@@ -18,24 +18,26 @@ class StudentIdCardRepoTest {
 
     @Test
     public void testInsert(){
-         studentIDCard = new StudentIDCard(4,4);
+         studentIDCard = new StudentIDCard(5,5);
         studentIdCardRepo.insertInto(studentIDCard);
 
-        assertEquals(4, studentIDCard.getStudentID());
+        assertEquals(5, studentIDCard.getStudentID());
     }
 
     @Test
     public void testUpdate(){
 
-//      studentIdCardRepo.updateCardNumber(4,7);
+      studentIdCardRepo.updateCardNumber(4,7);
       assertEquals(7,studentIdCardRepo.updateCardNumber(4,7));
     }
 
     @Test
     public void testDelete(){
 
-//        studentIdCardRepo.delete(4);
-        assertEquals(true, studentIdCardRepo.delete(4));
+        studentIdCardRepo.delete(4);
+        System.out.println(studentIdCardRepo.allStudentCards());
+//        assertNull(studentIdCardRepo.delete(4));
+
 
     }
 

@@ -4,12 +4,14 @@ import ro.school.model.Book;
 import ro.school.model.Enrolments;
 import ro.school.model.Student;
 
+import javax.print.attribute.standard.JobName;
 import java.awt.event.TextEvent;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.ResultSet;
 
-public class BookRepo<Lista> extends Connection{
+public class BookRepo extends Connection{
 
     public void insertBook(Book book){
         String insertTo = "";
@@ -29,17 +31,13 @@ public class BookRepo<Lista> extends Connection{
         return date;
   }
 
-  public boolean delete(String bookName){
+  public void delete(String bookName){
 
-        if (bookName != null) {
             String delete = "";
             delete += "DELETE FROM book ";
             delete += String.format("WHERE book_name = '%s'", bookName);
             exacuteStatement(delete);
 
-            return true;
-        }
-        return false;
   }
 
   private ResultSet selectAll(){
@@ -67,6 +65,39 @@ public class BookRepo<Lista> extends Connection{
             System.out.println("Nu s-a creat lista");
         }
         return bookList;
+  }
+
+  //todo :primeste ca parametru titlu cartii si returneaza cartea
+
+    private ResultSet returnByName(String bName){
+
+        exacuteStatement(String.format("select * from book where book_name = '%s' ",bName));
+        try {
+            return statement.getResultSet();
+        }catch (Exception e){
+            System.out.println("nu s-a conectat la schita");
+            return null;
+        }
+    }
+
+  public Book returnByName2(String bName){
+
+
+        ResultSet resultSet=returnByName(bName);
+
+        List<Book>bookList= new ArrayList<>();
+
+        try {
+
+            while (resultSet.next()) {
+                bookList.add(new Book(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getInt(4)));
+            }
+
+        }catch (Exception e){
+            System.out.println("Error");
+        }
+
+        return bookList.get(0);
   }
 
 

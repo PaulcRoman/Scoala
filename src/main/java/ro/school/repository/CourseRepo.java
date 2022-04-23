@@ -28,17 +28,13 @@ public class CourseRepo<Lista> extends Connection {
         return courseName;
     }
 
-    public boolean delete(int id){
+    public void delete(int id){
 
-        if (id != -1) {
             String delete = "";
             delete += "DELETE FROM course ";
             delete += String.format("WHERE id = %d ", id);
             exacuteStatement(delete);
 
-            return true;
-        }
-        return false;
     }
 
     private ResultSet selectAll(){
@@ -67,64 +63,103 @@ public class CourseRepo<Lista> extends Connection {
         return courseList;
     }
 
-    private ResultSet join(int courseId){
+    public String returnCursName(int id, String cursName){
+        String curs = "";
+        curs += "SELECT name FROM course ";
+        curs += String.format("WHERE id = %d", id);
+        exacuteStatement(curs);
+        return cursName;
+    }
 
-        String text= "";
-        text += String.format("select  course_id from enrolment" +
-                " join student s on enrolment.student_id = s.id " +
-                "where student_id=%d ",courseId );
-        text += "union\n" +
-                "select name from course\n" +
-                "join enrolment e on course.id = e.course_id";
+//    private ResultSet join(int courseId){
+//
+//        String text= "";
+//        text += String.format("select course_id from enrolment" +
+//                " join student s on enrolment.student_id = s.id " +
+//                "where student_id=%d ",courseId );
+//        text += "union\n" +
+//                "select name from course\n" +
+//                "join enrolment e on course.id = e.course_id";
+//
+//        exacuteStatement(text);
+//
+//        try {
+//
+//            return statement.getResultSet();
+//        }catch (Exception e){
+//            System.out.println("Nu s-a conectat la schita");
+//            return null;
+//        }
+//
+//    }
 
-        exacuteStatement(text);
+//    public List<Enrolments> allEnrolments(int id){
+//
+//        ResultSet set = join(id);
+//
+//        List<Enrolments> enrolmentsList = new ArrayList<>();
+//
+//        try {
+//            while (set.next()){
+//                enrolmentsList.add(new Enrolments(set.getInt(2), set.getInt(3),set.getString(4)));
+//
+//            }
+//
+//        }catch (Exception e){
+//            System.out.println("Nu s-a creat lista");
+//        }
+//        return enrolmentsList;
+//
+//    }
+
+//    public List<Enrolments> cursuriActive(int id){
+//
+//        ResultSet set = join(id);
+//
+//        List<Enrolments> enrolmentsList = new ArrayList<>();
+//
+//        try {
+//            while (set.next()){
+//                enrolmentsList.add(new Enrolments(set.getInt(1)));
+//
+//            }
+//
+//        }catch (Exception e){
+//            System.out.println("Nu s-a creat lista");
+//        }
+//        return enrolmentsList;
+//
+//    }
+
+    private ResultSet findCourseById(int id){
+        String curs = "";
+        curs += "SELECT * FROM course ";
+        curs += String.format("WHERE id = %d", id);
+        exacuteStatement(curs);
 
         try {
-
             return statement.getResultSet();
         }catch (Exception e){
             System.out.println("Nu s-a conectat la schita");
             return null;
         }
-
     }
 
-    public List<Enrolments> allEnrolments(int id){
+    public Course courseById(int id){
 
-        ResultSet set = join(id);
+        ResultSet set = findCourseById(id);
 
-        List<Enrolments> enrolmentsList = new ArrayList<>();
+        List<Course> courseList = new ArrayList<>();
 
         try {
             while (set.next()){
-                enrolmentsList.add(new Enrolments(set.getInt(1)));
-
+                courseList.add(new Course(set.getInt(1),set.getString(2),set.getString(3)));
             }
 
         }catch (Exception e){
-            System.out.println("Nu s-a creat lista");
+            System.out.println("Lista nu s-a creat");
         }
-        return enrolmentsList;
-
-    }
-
-    public List<Enrolments> cursuriActive(int id){
-
-        ResultSet set = join(id);
-
-        List<Enrolments> enrolmentsList = new ArrayList<>();
-
-        try {
-            while (set.next()){
-                enrolmentsList.add(new Enrolments(set.getInt(1)));
-
-            }
-
-        }catch (Exception e){
-            System.out.println("Nu s-a creat lista");
-        }
-        return enrolmentsList;
-
+        return courseList.get(0);
     }
 
 }

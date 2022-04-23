@@ -3,7 +3,6 @@ package ro.school.repository;
 import ro.school.model.Enrolments;
 import ro.school.model.Student;
 
-import java.net.ConnectException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,24 +20,52 @@ public class StudentRepo<Lista> extends Connection {
         exacuteStatement(insertInto);
     }
 
-    public void updateAge(String email, int age){
+    public int updateAge(String email, int age){
         String update = "";
-        update += String.format("UPDATE student SET age = $d", age);
-        update += String.format("WHERE email = '%s'", email);
+        update += String.format("UPDATE student SET age = %d", age);
+        update += String.format(" WHERE email = '%s'", email);
         exacuteStatement(update);
+        return age;
     }
 
-    public boolean delete(String email){
+    public void delete(String email){
 
-        if (email != null) {
             String delete = "";
             delete += "DELETE FROM student ";
             delete += String.format("WHERE email = '%s'", email);
             exacuteStatement(delete);
 
-            return true;
+    }
+    private ResultSet findByEmail(String email){
+        String getEmail = "";
+        getEmail += "SELECT * FROM student ";
+        getEmail += String.format("WHERE email = '%s'", email);
+        exacuteStatement(getEmail);
+
+        try {
+            return statement.getResultSet();
+        }catch (Exception e){
+            System.out.println("Nu s-a conectat la schita");
+            return null;
         }
-        return false;
+    }
+
+    public Student studByEmail(String email){
+
+        ResultSet set = findByEmail(email);
+
+        java.util.List<Student> studentList = new ArrayList<>();
+
+        try {
+            while (set.next()){
+                studentList.add(new Student(set.getInt(1),set.getString(2),set.getString(3),set.getString(4),
+                        set.getInt(5),set.getString(6)));
+            }
+
+        }catch (Exception e){
+            System.out.println("Lista nu s-a creat");
+        }
+        return studentList.get(0);
     }
 
     private ResultSet selectAll(){

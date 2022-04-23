@@ -7,7 +7,10 @@ public class Aplicatie {
 
     public static void main(String[] args) {
 
-        ViewUser viewUser = new ViewUser();
-        viewUser.play();
+//        ViewUser viewUser = new ViewUser();
+//        viewUser.play();
+
+        VewLogIn vewLogIn = new VewLogIn();
+        vewLogIn.go();
     }
 }

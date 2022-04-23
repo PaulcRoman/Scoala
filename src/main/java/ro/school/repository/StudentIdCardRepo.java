@@ -26,17 +26,12 @@ public class StudentIdCardRepo extends Connection{
         return cardNumber;
     }
 
-    public boolean delete(int id) {
+    public void delete(int id) {
 
-        if (id != -1) {
             String delete = "";
         delete += "DELETE FROM student_id_card ";
         delete += String.format("WHERE id = %d ", id);
         exacuteStatement(delete);
-
-        return true;
-    }
-        return false;
 
     }
 

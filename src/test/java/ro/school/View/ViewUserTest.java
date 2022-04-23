@@ -15,7 +15,8 @@ class ViewUserTest {
 
     @Test
     public void test6(){
-        viewUser.cursuriInscris();
+         viewUser.cursuriInscris();
     }
+
 
 }

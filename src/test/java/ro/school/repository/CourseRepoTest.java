@@ -1,5 +1,6 @@
 package ro.school.repository;
 
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ro.school.model.Course;
@@ -17,35 +18,37 @@ class CourseRepoTest {
 
     @Test
     public void testInsert(){
-         course = new Course("test","test1");
-         courseRepo = new CourseRepo();
+         course = new Course("test2","test3");
 
         courseRepo.insertCourse(course);
 
-        assertEquals("test", course.getName());
+        assertEquals("test2", course.getName());
+        assertEquals("test3",course.getDepartment());
     }
 
     @Test
     public void testDelete(){
 
-        assertEquals(true,courseRepo.delete(5));
+        System.out.println(courseRepo.allCourse());
+    courseRepo.delete(8);
+
+        assertNull(courseRepo.courseById(8));
 
     }
 
     @Test
     public void testUpdateName(){
 
-        courseRepo.updateName(5,"test");
+        courseRepo.updateName(6,"Computer");
 
-//        assertEquals("Computer Science", courseRepo.updateName(5,"Computer Science"));
+        assertEquals("Computer", courseRepo.updateName(6,"Computer"));
+
+        System.out.println(courseRepo.allCourse());
 
     }
 
     @Test
     public void testSelectAll(){
-
-//        courseRepo.delete(4);
-
 
         assertEquals(true,courseRepo.allCourse().size()>0);
 
@@ -54,10 +57,21 @@ class CourseRepoTest {
     @Test
     public void testLocate(){
 
-        assertEquals(true,courseRepo.cursuriActive(1).size()>0);
+        assertEquals(1,courseRepo.courseById(1).getId());
 
-        System.out.println(courseRepo.cursuriActive(2));
+    }
 
+    @Test
+    public void returnCourseName(){
+        assertEquals("Engleza", courseRepo.returnCursName(2,"Engleza"));
+    }
+
+    @Test
+    public void testCursById(){
+
+        assertEquals("Computer science", courseRepo.courseById(1).getName());
+        assertEquals(1, courseRepo.courseById(1).getId());
+        assertEquals("INFO", courseRepo.courseById(1).getDepartment());
     }
 
 }

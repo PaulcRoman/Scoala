@@ -26,12 +26,21 @@ class StudentRepoTest {
     }
 
     @Test
+    public void testUpdateAge(){
+
+        studentRepo.updateAge("sstocky0@irs.gov",23);
+        assertEquals(23,studentRepo.updateAge("sstocky0@irs.gov",23));
+
+    }
+
+    @Test
     public void testDelete(){
 
 
-//        studentRepo.delete("test@email.com");
+        studentRepo.delete("test@email.com");
 
-        assertEquals(true, studentRepo.delete("test@email.com"));
+//        assertEquals(true, studentRepo.delete("test@email.com"));
+        assertNull(studentRepo.studByEmail("test@email.com"));
     }
 
     @Test

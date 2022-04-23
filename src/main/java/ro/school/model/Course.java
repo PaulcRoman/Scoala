@@ -1,13 +1,11 @@
 package ro.school.model;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
 
 @Data
 @ToString
-@AllArgsConstructor
 public class Course {
 
     private int id;
@@ -19,4 +17,9 @@ public class Course {
         this.department = department;
     }
 
+    public Course(int id, String name, String department) {
+        this.id = id;
+        this.name = name;
+        this.department = department;
+    }
 }

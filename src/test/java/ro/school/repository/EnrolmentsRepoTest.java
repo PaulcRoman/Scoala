@@ -29,23 +29,33 @@ class EnrolmentsRepoTest {
     @Test
     public void testUpdate(){
 
-//        enrolmentsRepo.updateDate(1,"2020-01-02");
-        assertEquals("2020-01-02",enrolmentsRepo.updateDate(6,"2020-01-02"));
+        enrolmentsRepo.updateDate(6,"2020-01-10");
+        assertEquals("2020-01-10",enrolmentsRepo.updateDate(6,"2020-01-10"));
     }
 
     @Test
     public void testDelete(){
 
-//        enrolmentsRepo.delete(6);
+        enrolmentsRepo.delete(6);
 
-        assertEquals(true, enrolmentsRepo.delete(7));
+//        assertEquals(true, enrolmentsRepo.delete(7));
+
+        assertNull(enrolmentsRepo.enrolmnentById(6));
     }
 
     @Test
     public void testAfisare(){
 
-//        System.out.println(enrolmentsRepo.allEnrolments());
-
         assertEquals(null, enrolmentsRepo.allEnrolments());
+    }
+
+    @Test
+    public void enrolmentsInscris(){
+
+//        assertEquals(2,enrolmentsRepo.enrolmentsInscris(1).contains(new Enrolments()));
+        assertEquals(true,enrolmentsRepo.enrolmentsInscris(2).size()<2);
+
+
+
     }
 }
