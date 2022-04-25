@@ -5,7 +5,7 @@ import ro.school.model.Enrolments;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-public class EnrolmentsRepo<List> extends Connection {
+public class EnrolmentsRepo extends Connection {
 
     public void insertEnrolment(Enrolments enrolment){
         String insertInto = "";
@@ -15,6 +15,19 @@ public class EnrolmentsRepo<List> extends Connection {
         insertInto += String.format(" %d, %d, '%s'", enrolment.getStudentID(),enrolment.getCourseID(),enrolment.getData());
         insertInto += ")";
         exacuteStatement(insertInto);
+
+    }
+
+    public void insertEnrolmentById(Enrolments enrolment, int coutseId){
+        String insertInto = "";
+        insertInto += "INSERT INTO enrolment";
+        insertInto += "( student_id, course_id, created_at) ";
+        insertInto += "VALUES(";
+        insertInto += String.format(" %d, %d, '%s'", enrolment.getStudentID(),enrolment.getCourseID(),enrolment.getData());
+        insertInto += " WHERE course_id BETWEEN 1 AND 3 ";
+        insertInto += ")";
+        exacuteStatement(insertInto);
+
 
     }
 
@@ -75,7 +88,6 @@ public class EnrolmentsRepo<List> extends Connection {
         }
         return enrolmentList.get(0);
     }
-
 
     public java.util.List<Enrolments> allEnrolments(){
         ResultSet set = selectAll() ;

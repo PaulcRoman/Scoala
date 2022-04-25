@@ -3,6 +3,7 @@ package ro.school.View;
 import ro.school.model.Course;
 import ro.school.model.Enrolments;
 import ro.school.model.Student;
+import ro.school.model.StudentIDCard;
 import ro.school.repository.*;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class ViewUser {
         System.out.println("Apasa tasta 2 pentru a vedea cursurile la care sunteti inscris");
         System.out.println("Apasati tasta 3 petru a va inscrie la un nou curs");
         System.out.println("Apasati tasta 4 pentru a va crea un card");
-        System.out.println("Apasati tasta 5 petru a iesi");
+        System.out.println("Apasati tasta 5 petru a iesi din menu");
 
 
     }
@@ -54,6 +55,12 @@ public class ViewUser {
                 break;
             case 3:
                 inscriereCursNou();
+                break;
+            case 4:
+                newCard();
+                break;
+            case 5:
+                menu();
                 break;
 
         }
@@ -89,27 +96,57 @@ public class ViewUser {
 
             afisareCurs();
 
+//            System.out.println("Introduceti ID-ul dvs");
+//
+//            int id = scanner.nextInt();
+//
+//
             System.out.println("Introduceti ID-ul cursului la care doriti sa va inscrieti");
 
-            int id = scanner.nextInt();
+            int alegere = Integer.parseInt(scanner.nextLine());
 
-            cursuriInscris();
-            System.out.println("Introduceti ID-ul cursului la care doriti sa va inscrieti");
+            if (alegere > 0 && alegere < 4) {
 
-            int idCurs = scanner.nextInt();
+                enrolmentsRepo.enrolmentsInscris(alegere);
 
-            afisareCurs();
-            System.out.println("Introduceti data in format yyyy-mm-dd de cand doriti sa incepeti");
-            String data = scanner.nextLine();
+            }else {
+                System.out.println("Te rugam sa introduci in ID de curs valid");
+            }
 
-        List<Enrolments> enrolmentCurs = enrolmentsRepo.cursInscris(id,idCurs,data);
+        cursuriInscris();
+//
+//            afisareCurs();
+//            System.out.println("Introduceti data in format yyyy-mm-dd de cand doriti sa incepeti");
+//
+//
+//            String data = scanner.nextLine();
+//
+//        List<Enrolments> enrolmentCurs = enrolmentsRepo.cursInscris(id,idCurs,data);
+//
+//        for (Enrolments e : enrolmentCurs){
+//            System.out.println(e);
+//        }
 
-        for (Enrolments e : enrolmentCurs){
-            System.out.println(e);
         }
 
-        }
+    public void newCard(){
+
+        System.out.println("Introduceti ID-ul");
+
+        int id = Integer.parseInt(scanner.nextLine());
+
+        System.out.println("Introduceti nr de card dorit");
+
+        int nrCard = Integer.parseInt(scanner.nextLine());
+
+        studentIdCardRepo.insertInto(new StudentIDCard(id,nrCard));
+
+        System.out.println("Cardul a fost creat cu success.");
+
 
     }
+
+
+}
 
 

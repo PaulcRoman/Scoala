@@ -42,6 +42,11 @@ public class VewLogIn {
                 case 1:
                 login();
                 break;
+
+                case 2:
+                    System.out.println("La revedere");
+                    running = false;
+                    break;
             }
         }
 
